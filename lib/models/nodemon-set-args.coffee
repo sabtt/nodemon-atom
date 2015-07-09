@@ -12,7 +12,7 @@ class NodemonSetArgs
   # Public: Helper method to join @repo.path
   #
   # Returns: The full path to our NODEMON_ARGUMENTS file as {String}
-  filePath: -> Path.join(@repo.path, 'NODEMON_ARGUMENTS')
+  filePath: -> Path.join(@repo.path, atom.config.get('nodemon-atom.argumentsFile'))
 
   constructor: (@repo, {@amend, @andPush}={}) ->
     @currentPane = atom.workspace.getActivePane()

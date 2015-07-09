@@ -1,11 +1,4 @@
 # See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
-'context-menu':
-  'atom-text-editor': [
-    {
-      'label': 'Toggle nodemon-atom'
-      'command': 'nodemon-atom:menu'
-    }
-  ]
 'menu': [
   {
     'label': 'Packages'
@@ -13,8 +6,20 @@
       'label': 'nodemon-atom'
       'submenu': [
         {
-          'label': 'Toggle'
+          'label': 'Menu'
           'command': 'nodemon-atom:menu'
+        },
+        {
+          'label': 'Run'
+          'command': 'nodemon-atom:run'
+        },
+        {
+          'label': 'Set Args'
+          'command': 'nodemon-atom:set-args'
+        },
+        {
+          'label': 'Kill Running'
+          'command': 'nodemon-atom:kill'
         }
       ]
     ]

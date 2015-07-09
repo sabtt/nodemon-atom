@@ -1,5 +1,7 @@
 nodemon = require './nodemon'
 NodemonAtomCommands = require './views/nodemon-atom-menu'
+NodemonRun          = require './models/nodemon-run'
+NodemonKill         = require './models/nodemon-kill'
 NodemonSetArgs      = require './models/nodemon-set-args'
 
 module.exports =
@@ -26,10 +28,14 @@ module.exports =
       type: 'integer'
       default: 25
       minimum: 1
-    gitPath:
+    nodemonPath:
       type: 'string'
       default: 'nodemon'
       description: 'Where is your nodemon?'
+    argumentsFile:
+      type: 'string'
+      default: 'NODEMON_ARGUMENTS'
+      description: 'Arguments file name'
     messageTimeout:
       type: 'integer'
       default: 5
@@ -37,4 +43,6 @@ module.exports =
 
   activate: (state) ->
     atom.commands.add 'atom-workspace', 'nodemon-atom:menu', -> new NodemonAtomCommands()
+    atom.commands.add 'atom-workspace', 'nodemon-atom:run', -> nodemon.setArgs().then((repo) -> NodemonRun(repo))
+    atom.commands.add 'atom-workspace', 'nodemon-atom:kill', -> nodemon.setArgs().then((repo) -> NodemonKill(repo))
     atom.commands.add 'atom-workspace', 'nodemon-atom:set-args', -> nodemon.setArgs().then((repo) -> new NodemonSetArgs(repo))

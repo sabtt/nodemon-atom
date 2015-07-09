@@ -1,6 +1,11 @@
-{BufferedProcess, nodemonRepository} = require 'atom'
-# RepoListView = require './views/repo-list-view'
+{BufferedProcess, gitRepository} = require 'atom'
+spawnargs = require 'spawn-args'
+Path = require 'path'
+
 notifier = require './notifier'
+
+processes = {}
+views = {}
 
 # Public: Execute a nodemon command.
 #
@@ -12,7 +17,7 @@ notifier = require './notifier'
 #   :exit    - The {Function} to pass the exit code to.
 #
 # Returns nothing.
-nodemonCmd = ({args, cwd, options, stdout, stderr, exit}={}) ->
+nodemonCmd = ({name, args, cwd, options, stdout, stderr, exit}={}) ->
   command = _getnodemonPath()
   options ?= {}
   options.cwd ?= cwd
@@ -28,15 +33,42 @@ nodemonCmd = ({args, cwd, options, stdout, stderr, exit}={}) ->
       @save = null
 
   try
-    new BufferedProcess
+    process = new BufferedProcess
       command: command
       args: args
       options: options
       stdout: stdout
       stderr: stderr
       exit: exit
+    if name?
+      processes[name] = process
+      console.log processes
   catch error
     notifier.addError 'Nodemon Atom is unable to locate nodemon command. Please ensure process.env.PATH can access nodemon.'
+
+nodemonKill = (name) ->
+  console.log "killing"
+  if name in processes
+    console.log processes[name]
+    processes[name].kill()
+  if name in views
+    console.log views[name]
+    views[name].destory()
+
+filePath = (repo) ->
+  Path.join(repo.path, atom.config.get('nodemon-atom.argumentsFile'))
+
+nodemonParseArgs = (file_path) ->
+  args = nodemonGetArgs(file_path)
+  options = removequotes: true
+  args = spawnargs(args, options)
+  for i of args
+    name = args[i]
+    if name[0] == "\"" and name[name.length - 1] == "\""
+      args[i] = name[1 ... name.length - 1]
+    else if name[0] == "\'" and name[name.length - 1] == "\'"
+      args[i] = name[1 ... name.length - 1]
+  return args
 
 nodemonStatus = (repo, stdout) ->
   nodemonCmd
@@ -44,8 +76,8 @@ nodemonStatus = (repo, stdout) ->
     cwd: repo.getWorkingDirectory()
     stdout: (data) -> stdout(if data.length > 2 then data.split('\0') else [])
 
-nodemonSetArgs = (filePath, new_args) ->
-  return atom.config.set("nodemon-atom.args_" + filePath, new_args)
+nodemonRun = (filePath) ->
+  args2 = spawnargs('-port 80 --title "this is a title"', { removequotes: true });
   # exit ?= (code) ->
   #   if code is 0
   #     notifier.addSuccess "Added #{file ? 'all files'}"
@@ -55,6 +87,18 @@ nodemonSetArgs = (filePath, new_args) ->
   #   stdout: stdout if stdout?
   #   stderr: stderr if stderr?
   #   exit: exit
+
+nodemonSetArgs = (filePath, new_args) ->
+  return atom.config.set("nodemon-atom.args_" + filePath, new_args)
+# exit ?= (code) ->
+#   if code is 0
+#     notifier.addSuccess "Added #{file ? 'all files'}"
+# nodemonCmd
+#   args: ['add', '--all', file ? '.']
+#   cwd: repo.path
+#   stdout: stdout if stdout?
+#   stderr: stderr if stderr?
+#   exit: exit
 
 nodemonGetArgs = (filePath) ->
   old_args = atom.config.get "nodemon-atom.args_" + filePath
@@ -106,7 +150,7 @@ relativize = (path) ->
 # returns submodule for given file or undefined
 getSubmodule = (path) ->
   path ?= atom.workspace.getActiveTextEditor()?.getPath()
-  repo = nodemonRepository.open(atom.workspace.getActiveTextEditor()?.getPath(), refreshOnWindowFocus: false)
+  repo = gitRepository.open(atom.workspace.getActiveTextEditor()?.getPath(), refreshOnWindowFocus: false)
   submodule = repo?.repo.submoduleForPath(path)
   repo?.destroy?()
   submodule
@@ -136,9 +180,16 @@ getRepoForCurrentFile = ->
       reject "no current file"
 
 module.exports.cmd = nodemonCmd
+module.exports.filePath = filePath
+module.exports.run = nodemonRun
+module.exports.kill = nodemonKill
+# module.exports.stop = nodemonStop
+module.exports.parseArgs = nodemonParseArgs
 module.exports.setArgs = nodemonSetArgs
 module.exports.getArgs = nodemonGetArgs
 module.exports.dir = dir
 module.exports.relativize = relativize
 module.exports.getSubmodule = getSubmodule
 module.exports.getRepo = getRepo
+module.exports.processes = processes
+module.exports.views = views
