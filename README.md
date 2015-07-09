@@ -1,5 +1,5 @@
-# nodemon-atom package
+# nodemon-atom
 
-A short description of your package.
+Nodemon Atom is a package to run nodemon from within atom
 
-![A screenshot of your package](https://f.cloud.nodemonhub.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+![nodemon-atom](https://f.cloud.nodemonhub.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)

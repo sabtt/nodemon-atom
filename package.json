@@ -2,13 +2,16 @@
   "name": "nodemon-atom",
   "main": "./lib/nodemon-atom",
   "version": "0.0.0",
-  "description": "A short description of your package",
+  "description": "A package to run nodemon from atom",
   "keywords": [
   ],
   "activationCommands": {
     "atom-workspace": "nodemon-atom:menu"
   },
-  "repository": "https://nodemonhub.com/atom/nodemon-atom",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pdxjohnny/nodemon-atom"
+  },
   "license": "MIT",
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
@@ -19,5 +22,7 @@
     "underscore-plus": "1.x",
     "atom-space-pen-views": "^2.0.3",
     "spawn-args": "^0.1.0"
-  }
+  },
+  "readme": "# nodemon-atom\n\nNodemon Atom is a package to run nodemon from within atom\n\n![nodemon-atom](https://f.cloud.nodemonhub.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)\n",
+  "readmeFilename": "README.md"
 }
