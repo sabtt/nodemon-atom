@@ -1,7 +1,6 @@
 nodemon = require './nodemon'
 NodemonAtomCommands = require './views/nodemon-atom-menu'
-NodemonRun          = require './models/nodemon-run'
-NodemonKill         = require './models/nodemon-kill'
+NodemonProcess      = require './models/nodemon-run'
 NodemonSetArgs      = require './models/nodemon-set-args'
 
 module.exports =
@@ -43,6 +42,6 @@ module.exports =
 
   activate: (state) ->
     atom.commands.add 'atom-workspace', 'nodemon-atom:menu', -> new NodemonAtomCommands()
-    atom.commands.add 'atom-workspace', 'nodemon-atom:run', -> nodemon.setArgs().then((repo) -> NodemonRun(repo))
-    atom.commands.add 'atom-workspace', 'nodemon-atom:kill', -> nodemon.setArgs().then((repo) -> NodemonKill(repo))
+    atom.commands.add 'atom-workspace', 'nodemon-atom:run', -> nodemon.setArgs().then((repo) -> NodemonProcess.NodemonRun(repo))
+    atom.commands.add 'atom-workspace', 'nodemon-atom:kill', -> nodemon.setArgs().then((repo) -> NodemonProcess.NodemonKill(repo))
     atom.commands.add 'atom-workspace', 'nodemon-atom:set-args', -> nodemon.setArgs().then((repo) -> new NodemonSetArgs(repo))

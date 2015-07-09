@@ -9,6 +9,7 @@ NodemonRun = (repo) ->
   view = new OutputView()
   nodemon.cmd
     name: filePath
+    view: view
     args: args
     cwd: repo.path
     stdout: (data) -> view.addLine(data.toString())

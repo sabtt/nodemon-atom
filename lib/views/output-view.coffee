@@ -24,5 +24,8 @@ module.exports =
         @destroy()
       , atom.config.get('nodemon-atom.messageTimeout') * 1000
 
+    remove: ->
+      @destroy()
+
     destroy: ->
       @panel?.destroy()

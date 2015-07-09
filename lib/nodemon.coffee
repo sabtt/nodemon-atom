@@ -17,7 +17,7 @@ views = {}
 #   :exit    - The {Function} to pass the exit code to.
 #
 # Returns nothing.
-nodemonCmd = ({name, args, cwd, options, stdout, stderr, exit}={}) ->
+nodemonCmd = ({name, args, cwd, options, stdout, stderr, exit, view}={}) ->
   command = _getnodemonPath()
   options ?= {}
   options.cwd ?= cwd
@@ -42,18 +42,20 @@ nodemonCmd = ({name, args, cwd, options, stdout, stderr, exit}={}) ->
       exit: exit
     if name?
       processes[name] = process
-      console.log processes
+    if name? and view?
+      views[name] = view
   catch error
     notifier.addError 'Nodemon Atom is unable to locate nodemon command. Please ensure process.env.PATH can access nodemon.'
 
 nodemonKill = (name) ->
-  console.log "killing"
-  if name in processes
-    console.log processes[name]
+  try
     processes[name].kill()
-  if name in views
-    console.log views[name]
-    views[name].destory()
+  catch error
+    notifier.addError 'Nodemon Atom can\'t kill process'
+  try
+    views[name].remove()
+  catch error
+    console.log "Can't destory view", error
 
 filePath = (repo) ->
   Path.join(repo.path, atom.config.get('nodemon-atom.argumentsFile'))
