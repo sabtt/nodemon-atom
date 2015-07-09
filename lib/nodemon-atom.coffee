@@ -37,4 +37,4 @@ module.exports =
 
   activate: (state) ->
     atom.commands.add 'atom-workspace', 'nodemon-atom:menu', -> new NodemonAtomCommands()
-    atom.commands.add 'atom-workspace', 'nodemon-atom:set-args', -> nodemon.setArgs().then((repo) -> NodemonSetArgs(repo))
+    atom.commands.add 'atom-workspace', 'nodemon-atom:set-args', -> nodemon.setArgs().then((repo) -> new NodemonSetArgs(repo))

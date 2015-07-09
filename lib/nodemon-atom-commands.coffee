@@ -1,12 +1,12 @@
 nodemon = require './nodemon'
 
 getCommands = ->
-  nodemonSetArgs                 = require './models/nodemon-set-args'
+  NodemonSetArgs                 = require './models/nodemon-set-args'
 
   nodemon.getRepo()
     .then (repo) ->
       commands = []
-      commands.push ['nodemon-atom:set-args', 'Set Args', -> nodemonSetArgs(repo)]
+      commands.push ['nodemon-atom:set-args', 'Set Args', -> new NodemonSetArgs(repo)]
 
       return commands
 

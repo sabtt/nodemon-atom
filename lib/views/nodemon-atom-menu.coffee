@@ -35,7 +35,6 @@ class NodemonAtomMenu extends SelectListView
 
     NodemonAtomCommands()
       .then (commands) =>
-        console.log "making list"
         commands = commands.map (c) -> { name: c[0], description: c[1], func: c[2] }
         commands = _.sortBy(commands, 'name')
         @setItems(commands)

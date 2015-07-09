@@ -44,18 +44,26 @@ nodemonStatus = (repo, stdout) ->
     cwd: repo.getWorkingDirectory()
     stdout: (data) -> stdout(if data.length > 2 then data.split('\0') else [])
 
-nodemonSetArgs = (repo, {file, stdout, stderr, exit}={}) ->
-  console.log "nodemonSetArgs"
-  console.log repo
+nodemonSetArgs = (filePath, new_args) ->
+  return atom.config.set("nodemon-atom.args_" + filePath, new_args)
   # exit ?= (code) ->
   #   if code is 0
   #     notifier.addSuccess "Added #{file ? 'all files'}"
   # nodemonCmd
   #   args: ['add', '--all', file ? '.']
-  #   cwd: repo.getWorkingDirectory()
+  #   cwd: repo.path
   #   stdout: stdout if stdout?
   #   stderr: stderr if stderr?
   #   exit: exit
+
+nodemonGetArgs = (filePath) ->
+  old_args = atom.config.get "nodemon-atom.args_" + filePath
+  if old_args
+    return old_args
+  else
+    return """Put your arguments to nodemon here
+    -e py,js,html --exec "python -m module.app"
+    """
 
 _getnodemonPath = ->
   p = atom.config.get('nodemon-plus.nodemonPath') ? 'nodemon'
@@ -129,6 +137,7 @@ getRepoForCurrentFile = ->
 
 module.exports.cmd = nodemonCmd
 module.exports.setArgs = nodemonSetArgs
+module.exports.getArgs = nodemonGetArgs
 module.exports.dir = dir
 module.exports.relativize = relativize
 module.exports.getSubmodule = getSubmodule
