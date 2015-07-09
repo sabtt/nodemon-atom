@@ -2,7 +2,7 @@
 
 module.exports =
   class OutputView extends ScrollView
-    message: ''
+    message: ""
 
     @content: ->
       @div class: 'nodemon-atom info-view', =>
@@ -13,7 +13,12 @@ module.exports =
       @panel ?= atom.workspace.addBottomPanel(item: this)
 
     addLine: (line) ->
-      @find(".output").append(line)
+      @message += line
+      newlines = (@message.match(/\n/g) || []).length;
+      while newlines > atom.config.get('nodemon-atom.maxLines')
+        @message = @message.substring(@message.indexOf("\n") + 1);
+        newlines = (@message.match(/\n/g) || []).length;
+      @find(".output").text(@message)
 
     reset: ->
       @message = ''

@@ -35,6 +35,10 @@ module.exports =
       type: 'string'
       default: 'NODEMON_ARGUMENTS'
       description: 'Arguments file name'
+    maxLines:
+      type: 'integer'
+      default: 10
+      description: 'How long is the nodemon output allowed to be'
     messageTimeout:
       type: 'integer'
       default: 5
