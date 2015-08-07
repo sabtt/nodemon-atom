@@ -5,11 +5,6 @@ NodemonSetArgs      = require './models/nodemon-set-args'
 
 module.exports =
   config:
-    includeStagedDiff:
-      title: 'Include staged diffs?'
-      description: 'description'
-      type: 'boolean'
-      default: true
     openInPane:
       type: 'boolean'
       default: true
@@ -19,14 +14,6 @@ module.exports =
       type: 'string'
       default: 'right'
       description: 'Where should new panes go? (Defaults to right)'
-    wordDiff:
-      type: 'boolean'
-      default: true
-      description: 'Should word diffs be highlighted in diffs?'
-    amountOfCommitsToShow:
-      type: 'integer'
-      default: 25
-      minimum: 1
     nodemonPath:
       type: 'string'
       default: 'nodemon'
