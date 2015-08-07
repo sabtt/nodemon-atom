@@ -22,6 +22,5 @@
     "atom-space-pen-views": "^2.0.3",
     "spawn-args": "^0.1.0"
   },
-  "readme": "# nodemon-atom\n\nNodemon Atom is a package to run nodemon from within atom\n\n![nodemon-atom](https://f.cloud.nodemonhub.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)\n",
   "readmeFilename": "README.md"
 }
