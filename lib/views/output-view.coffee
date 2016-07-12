@@ -1,4 +1,5 @@
 {$, ScrollView} = require 'atom-space-pen-views'
+ansi_up         = require 'ansi_up'
 
 module.exports =
   class OutputView extends ScrollView
@@ -14,11 +15,11 @@ module.exports =
 
     addLine: (line) ->
       @message += line
-      newlines = (@message.match(/\n/g) || []).length;
+      newlines = (@message.match(/\n/g) || []).length
       while newlines > atom.config.get('nodemon-atom.maxLines')
-        @message = @message.substring(@message.indexOf("\n") + 1);
-        newlines = (@message.match(/\n/g) || []).length;
-      @find(".output").text(@message)
+        @message = @message.substring(@message.indexOf("\n") + 1)
+        newlines = (@message.match(/\n/g) || []).length
+      @find(".output").html(ansi_up.ansi_to_html(@message))
 
     reset: ->
       @message = ''
