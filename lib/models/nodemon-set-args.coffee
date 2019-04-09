@@ -34,7 +34,7 @@ class NodemonSetArgs
   showFile: ->
     atom.workspace
       .open(@filePath(), searchAllPanes: true)
-      .done (textEditor) =>
+      .then (textEditor) =>
         if atom.config.get('nodemon-atom.openInPane')
           @splitPane(atom.config.get('nodemon-atom.splitPane'), textEditor)
         else
